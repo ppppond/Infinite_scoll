@@ -86,7 +86,6 @@ alt_description: photo.alt_description
 
             // save ลง localStorage
             local();
-            console.log('Updated Favorites:', favorite);
         })
 
         // 1. สร้าง Link (<a>) และ Image (<img>) ตามปกติ
@@ -129,7 +128,6 @@ alt_description: photo.alt_description
             imagesLoaded++;
             if (imagesLoaded === totalImages) {
                 ready = true; // โหลดครบแล้ว! เปิดประตูให้ scroll ขอชุดต่อไปได้
-                console.log("พร้อมโหลดชุดต่อไปแล้ว ✅");
             }
         });
 
