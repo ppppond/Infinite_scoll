@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infinite Scolling</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>Dream Desk | Unsplash API</h1>
+    <div class="btn-container">
+        <button onclick="showFavorites()">❤️ My Favorites</button>
+        <button onclick="getPhotos()">🔄 Load New Photos</button>
+    </div>
+    <div id="img-container" class="img-container"></div>
+    
+    <script src="config.js"></script> <!-- เรียก config ก่อน app.js เพื่อเรียกใช้ API KEY -->
+    <script src="app.js"></script>
+</body>
+</html>

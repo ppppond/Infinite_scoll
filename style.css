@@ -1,0 +1,96 @@
+html{
+    box-sizing: border-box; /* อ้างอิงตามขนดจริง padding, border */
+}
+body{
+    margin: 0;
+}
+h1{
+    text-align: center;
+    margin-top: 25px;
+    margin-bottom: 15px;
+    font-size: 40px;
+    letter-spacing: 4px; /* ระยะห่างระหว่างตัวอักษร */
+}
+
+.btn-container {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    background: rgb(255, 255, 255);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.img-container{
+    margin: 10px 20%;
+}
+
+#img-container > div {
+    position: relative;
+    overflow: hidden; /* กันภาพล้น */
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+    transition: transform 0.3s;
+}
+
+#img-container > div:hover{
+    transform: translateY(-5px) /* ลอยขึ้นนิดนึงตอนเอาเมาส์ชี้ */
+}
+
+.img-container img{
+    width: 100%;
+    margin-top: 5px;
+}
+
+.fav-btn {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: rgba(255, 255, 255, 0.8);
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    font-size: 20px;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    transition: all 0.2s;
+    z-index: 10; /* ลอยให้อยู่เหนือรูป  */
+}
+
+.fav-btn:hover{ /* ขยายใหญ่ขึ้นตอนชี้ */ 
+    transform: scale(1.2); 
+    background: white;
+}
+
+.fav-btn:active{ /* หดลงตอนกด */
+    transform: scale(0.9);
+}
+
+.loading{
+    border: 16px solid #f3f3f3;
+    border-top: 16px solid #3498db;
+    border-radius: 50%; /* ทำให้เป็นวงกลม */
+    width: 120px;
+    height: 120px;
+    animation: spin 3s linear infinite;
+    margin: 20px auto;
+}
+
+/* Create animation */
+@keyframes spin{
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+@media screen and (max-width: 600px) {
+    h1 {
+        font-size: 20px;
+    }
+    .img-container {
+        margin: 10px;
+    }
+}
