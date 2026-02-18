@@ -11,6 +11,7 @@ h1{
     font-size: 40px;
     letter-spacing: 4px; /* ระยะห่างระหว่างตัวอักษร */
 }
+<<<<<<< HEAD
 
 .btn-container {
     display: flex;
@@ -40,11 +41,17 @@ h1{
     transform: translateY(-5px) /* ลอยขึ้นนิดนึงตอนเอาเมาส์ชี้ */
 }
 
+=======
+.img-container{
+    margin: 10px 20%;
+}
+>>>>>>> 1b849669abdc7de323819bf177bc2a08216c9878
 .img-container img{
     width: 100%;
     margin-top: 5px;
 }
 
+<<<<<<< HEAD
 .fav-btn {
     position: absolute;
     top: 15px;
@@ -70,6 +77,8 @@ h1{
     transform: scale(0.9);
 }
 
+=======
+>>>>>>> 1b849669abdc7de323819bf177bc2a08216c9878
 .loading{
     border: 16px solid #f3f3f3;
     border-top: 16px solid #3498db;
