@@ -1,0 +1,45 @@
+html{
+    box-sizing: border-box; /* อ้างอิงตามขนดจริง padding, border */
+}
+body{
+    margin: 0;
+}
+h1{
+    text-align: center;
+    margin-top: 25px;
+    margin-bottom: 15px;
+    font-size: 40px;
+    letter-spacing: 4px; /* ระยะห่างระหว่างตัวอักษร */
+}
+.img-container{
+    margin: 10px 20%;
+}
+.img-container img{
+    width: 100%;
+    margin-top: 5px;
+}
+
+.loading{
+    border: 16px solid #f3f3f3;
+    border-top: 16px solid #3498db;
+    border-radius: 50%; /* ทำให้เป็นวงกลม */
+    width: 120px;
+    height: 120px;
+    animation: spin 3s linear infinite;
+    margin: 20px auto;
+}
+
+/* Create animation */
+@keyframes spin{
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+@media screen and (max-width: 600px) {
+    h1 {
+        font-size: 20px;
+    }
+    .img-container {
+        margin: 10px;
+    }
+}
