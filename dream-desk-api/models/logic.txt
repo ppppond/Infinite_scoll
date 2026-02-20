@@ -1,0 +1,1 @@
+1. object ค่า value จะรับมาเป็น String จากหน้า frontend
