@@ -76,7 +76,7 @@ function displayImage() {
                     links: {
                         html: photo.links.html
                     },
-alt_description: photo.alt_description
+                    alt_description: photo.alt_description
                   
                 }
 
