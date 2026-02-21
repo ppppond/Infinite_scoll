@@ -6,10 +6,12 @@ const mongoose = require('mongoose');
 const FavoriteSchema = new mongoose.Schema({
     id: {type: String, required: true, unique: true }, // กันการเซฟรูปซ้ำ
     urls: {
-        regular: {type: String, required: true}
+        regular: {type: String, required: true} // required คือ จำเป็นต้องมีข้อมูล
     },
     links: {
-        html: {type: String, required: true}
+        html: {type: String}
     },
-    alt_description: {type: String, required: true}
+    alt_description: {type: String}
 })
+
+module.exports = mongoose.model('Favorite', FavoriteSchema)
