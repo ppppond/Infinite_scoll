@@ -5,10 +5,7 @@ const apiUrl = `https://api.unsplash.com/photos/random?client_id=${apiKey}&count
 
 // กำหนดตัวแปร หรือ การอ้างอิงตัวแปร
 const imageContainer = document.getElementById('img-container');
-let photoArr = [
-    { id: 1, urls: { regular: 'https://images.unsplash.com/photo-1493663284031-b7e3aefcae8e' } },
-    { id: 2, urls: { regular: 'https://images.unsplash.com/photo-1542751371-adc38448a05e' } },
-]; // เดียวใส่ข้อมูลปลอมไปก่อน
+let photoArr = []; // เดียวใส่ข้อมูลปลอมไปก่อน
 
 // ✨ 1. เพิ่มตัวแปรนี้: เอาไว้เช็คว่า "พร้อมจะโหลดหรือยัง?"
 let ready = false;
@@ -16,12 +13,24 @@ let imagesLoaded = 0;
 let totalImages = 0;
 
 // local storage เก็บค่าเมื่อ Refesh หน้าเว็บ
-function local() {
-    localStorage.setItem('img-list', JSON.stringify(favorite));
-}
+// function local() {
+//     localStorage.setItem('img-list', JSON.stringify(favorite));
+// }
 // 2. ตอนดึงออกมาใช้ (แก้ใหม่)
 // แปลว่า: ไปดึง 'img-list' มานะ -> ถ้ามีของให้แกะห่อ (Parse) -> ถ้าไม่มี (null) ให้เป็น array ว่าง []
-let favorite = JSON.parse(localStorage.getItem('img-list')) || [];
+// let favorite = JSON.parse(localStorage.getItem('img-list')) || [];
+
+let favorite = [];
+
+// function data base
+async function getFavoritesFromDB() {
+    try {
+        const res = await fetch('http://localhost:3000/api/favorites'); // ขอดูรูปที่เซฟไว้
+        favorite = await res.json(); // เอาข้อมูลที่ได้มาจาก DataBase มาใส่ array
+    } catch(err) {
+        console.log('ดึงข้อมูล Favorite ไม่สำเร็จ', err);
+    }
+}
 
 // function ต่างๆ
 async function getPhotos() { // ไปร้องขอข้อมูลจาก API แล้วรอให้เสร็จก่อนโดยใส่ async, await ไว้ด้วยค่อยทำงานต่อ
@@ -60,12 +69,15 @@ function displayImage() {
         // 🧩 จิ๊กซอว์ที่ 1: สั่งให้ปุ่มทำงานเมื่อถูกกด
         // --------------------------------------------------
 
-        fav.addEventListener('click', () => {
+        fav.addEventListener('click', async () => {
             // หา index ก่อน
             const findIndex = favorite.findIndex(item => item.id === photo.id)
 
             if (findIndex !== -1) { //ถ้าเจอให้ทำอะไร
                 favorite.splice(findIndex,1);
+                await fetch(`http://localhost:3000/api/favorites/${photo.id}`, {
+                    method: 'DELETE'
+                })
                 fav.innerText = '🩶';
             } else {
                 const dataFav = {
@@ -80,12 +92,19 @@ function displayImage() {
                   
                 }
 
+                // เอาไปเก็บที่ backend วิธีฝากของเข้าโกดัง (ตอนที่ต้องการเซฟรูป)
+                await fetch('http://localhost:3000/api/favorites', { // เดียว /api/favorite จะถูกเอาไปเปรียบเทียบกับฝั่ง Backend app.js ว่าทางเข้าถูกไหม
+                    method: 'POST', // เอาของไปส่ง method POST
+                    headers: { 'Content-Type': 'application/json' }, // ป้ายแปะหน้ากล่อง นี่คือข้อมูล JSON นะ (Headers: 'Content-Type': 'application/json')
+                    body: JSON.stringify(dataFav)
+                })
+
                 favorite.push(dataFav);
                 fav.innerText = '❤️';
             }
 
             // save ลง localStorage
-            local();
+            // local();
         })
 
         // 1. สร้าง Link (<a>) และ Image (<img>) ตามปกติ
@@ -147,7 +166,13 @@ function showFavorites() {
     ready = false;
 }
 
-getPhotos();
+async function startApp() {
+    await getFavoritesFromDB(); // 1. ไปเบิกข้อมูลหัวใจจาก Database มาใส่กระเป๋าให้เสร็จก่อน
+    getPhotos() // 2. พอรู้แล้วว่าเคยไลก์รูปไหนบ้าง ค่อยไปดึงรูปทั้งหมดจาก Unsplash มาแสดง
+}
+
+startApp();
+
 
 // addEvent
 window.addEventListener('scroll', () => {
