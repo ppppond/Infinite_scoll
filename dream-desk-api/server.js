@@ -32,7 +32,7 @@ app.get('/api/favorites', async (req, res) => {
     }
 })
 // เส้นทางฝากเซฟรูปให้หน่อย (POST)
-app.post('/api/favorites', async (req, res) => { 
+app.post('/api/favorites', async (req, res) => {
     // เดินเข้าช่องทางที่ถูกต้อง (app.post('/api/favorites')): เซิร์ฟเวอร์เห็นว่าไรเดอร์มาส่งของแบบ POST ตรงกับป้ายที่แขวนไว้ ก็เลยเปิดประตูรับ
     try {
         // ข้อมูลที่หน้าเว็บส่งมาจะถูกเก็บอยู่ในกระเป๋าที่ชื่อว่า req.body
@@ -47,13 +47,14 @@ id นี้เคยมีคนส่งมาซ้ำหรือยัง? 
 
         /* สั่งเซฟลงโกดัง (await newFav.save()): คำสั่ง .save() เป็นเวทมนตร์ของ Mongoose ครับ 
         มันจะแปลงคำสั่ง JavaScript ของเรา ให้กลายเป็นภาษาที่ MongoDB เข้าใจ แล้วส่งข้อมูลวิ่งขึ้น Cloud ไปเก็บบนเว็บ MongoDB Atlas อย่างถาวร */
-        
-        const savFav = await newFav.save(); 
+
+        const savFav = await newFav.save();
         /* ออกใบเสร็จ (res.status(201).json(savFav)): เมื่อ MongoDB ตอบกลับมาว่า 
         "เก็บของเข้าชั้นวางเรียบร้อย!" เซิร์ฟเวอร์ก็จะตีตราปั๊ม รหัส 201 (Created = สร้างสำเร็จ) 
         พร้อมกับส่งหน้าตาข้อมูลที่เซฟเสร็จแล้ว กลับไปให้หน้าเว็บ (Frontend) เพื่อเป็นการบอกว่า "มิชชั่นคอมพลีท 
         พี่เปลี่ยนสีปุ่มหัวใจเป็นสีแดงได้เลย!" */
         res.status(201).json(savFav);
+        sendLineMessage('มีคนเซฟรูปภาพแล้วครับ/คะ', req.body.urls.regular);
     } catch (err) {
         res.status(400).json({ message: err.message });
     }
@@ -72,6 +73,29 @@ app.delete('/api/favorites/:id', async (req, res) => { /*
     }
 
 })
+
+// ส่วน Line BOT
+async function sendLineMessage(text, imageUrl) {
+    await fetch('https://api.line.me/v2/bot/message/push', {
+        method: 'POST', // 'POST' คือ การส่งข้อมูล
+        headers: // เอา Object หลายตัวมารวมกันเป็น Object เดียว
+            { 'Content-Type': 'application/json', 'Authorization': `Bearer ${process.env.LINE_TOKEN}` },
+        body: JSON.stringify({ // ต้องทำเป็น string ก่อน เพราะ เราไม่สามารถส่งข้อมูลแบบ Object ไปแบบดื้อๆได้
+            'to': process.env.LINE_USER_ID,
+            'messages': [
+                {
+                    'type': 'text',
+                    'text': text
+                },
+                {
+                    'type': 'image',
+                    'originalContentUrl': imageUrl, 
+                    'previewImageUrl': imageUrl
+                }
+            ]
+        })
+    })
+}
 
 // สั่งเปิด sever
 app.listen(process.env.PORT, () => console.log('sever run เรียบร้อย'));
